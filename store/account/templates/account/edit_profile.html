@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col-4 bg-light custom-box-profile">
+            <form action="{% url 'edit_profile_activate' request.user.pk %}" class="p-4" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-outline-warning me-3 mb-3">
+                        Изменить профиль
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

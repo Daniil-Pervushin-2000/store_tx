@@ -1,0 +1,5 @@
+.idea/
+venv/
+store/store/.env
+store/db.sqlite3
+store/media/

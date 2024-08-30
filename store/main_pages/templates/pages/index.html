@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load pages_simple_tag %}
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-center">
+        <div class="custom-title">
+            <h3 class="text-center text-danger">Хит продаж</h3>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card card-custom h-100">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ product.get_first_photo }}" class="card-img-top custom-image" alt="...">
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        {% if request.user.is_authenticated %}
+                        {% check_favorite request.user product.pk as status_favorite %}
+                        {% if status_favorite %}
+                        <a href="{% url 'favorite_activate' product.pk %}"><i
+                                class="bi bi-balloon-heart-fill fs-5 text-danger"></i></a>
+                        {% else %}
+                        <a href="{% url 'favorite_activate' product.pk %}"><i
+                                class="bi bi-balloon-heart fs-5 text-danger"></i></a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    <p class="card-text">
+                        {{ product.description|truncatechars:30 }}
+                    </p>
+                    <ul class="list-group list-group-flush custom-list">
+                        <li class="list-group-item">Кол-во {{ product.quantity }}</li>
+                        <li class="list-group-item">Бренд {{ product.brand }}</li>
+                        <li class="list-group-item">Стоимость {{ product.price }}$</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-around">
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-outline-danger">Посмотреть</a>
+                        <a href="{% url 'to_cart_activate' product.pk 'add' %}" class="btn btn-outline-danger">Купить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

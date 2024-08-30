@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Успешная оплата
+{% endblock title %}
+
+{% block content %}
+<div class="container bg-light p-4">
+    <h4 class="text-center">Оплата прошла успешно</h4>
+    <h3 class="text-center">Спасибо за покупки</h3>
+
+    <a href="{%url 'index_path' %}" class="btn btn-outline-success">На главную страницу</a>
+</div>
+{% endblock content %}

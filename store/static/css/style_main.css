@@ -1,0 +1,31 @@
+body {
+    background: url(../image/1.jpg);
+    background-position: center, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.custom-box-profile {
+     border-radius: 20px;
+     border: 3px solid black;
+     box-shadow: 5px 15px 13px rgb(20, 20, 20);
+}
+
+.custom-img-profile {
+     border-radius: 50px;
+     border: 3px solid black;
+}
+
+.custom-box-favorite {
+     padding: 10px;
+     background-color: rgb(239, 232, 232);
+     border-radius: 10px;
+     border: 3px solid black;
+     box-shadow: 5px 15px 13px rgb(20, 20, 20);
+}
+
+.custom_text_cart {
+    font-size: 18px;
+    font-weight: 500;
+}

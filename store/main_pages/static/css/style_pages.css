@@ -1,0 +1,40 @@
+.card-custom {
+    border: 2px solid #000;
+    background-color: rgba(255,255,255,0.9);
+}
+
+.custom-image {
+    padding: 20px;
+    border-radius: 20px;
+    width: 450px;
+    height: 300px;
+}
+
+.custom-image-slider {
+    padding: 20px;
+    border-radius: 20px;
+    width: 450px;
+    height: 300px;
+}
+
+.custom-title {
+    background-color: black;
+    padding: 3px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.custom-list {
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.custom-list-item {
+    font-size: 18px;
+    text-align: center;
+}
+
+.custom-card-form {
+    border: 2px solid;
+    box-shadow: 16px 24px 9px #111111;
+}

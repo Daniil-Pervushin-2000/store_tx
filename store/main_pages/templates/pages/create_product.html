@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-center">
+        <div class="col-4 bg-light p-4 custom-card-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for f in form %}
+                <p><label for='{{ f.id_for_label }}'>{{ f.label }}</label>{{ f }}</p>
+                <p class="form-error">{{ f.errors }}</p>
+                {% endfor %}
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-outline-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

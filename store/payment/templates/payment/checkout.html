@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="row bg-light">
+            <div class="col-6 pt-2 ps-3">
+                <a href="{% url 'cart_path' %}" class="btn btn-outline-danger">Назад</a>
+                <hr>
+                <h4>Заказанные товары</h4>
+                <hr>
+                {% for item in products %}
+                <ul class="list-group my-4">
+                    <li class="list-group-item custom_text_cart">{{ item.product.title }}</li>
+                    <li class="list-group-item custom_text_cart">Стоимость продукта: {{ item.product.price }}$</li>
+                    <li class="list-group-item custom_text_cart">
+                        <div class="d-flex justify-content-between">
+                            <div class="my-auto">
+                                Количество продукта: {{ item.quantity }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a href="{% url 'to_cart_activate' item.product.pk 'add' %}"
+                                   style="text-decoration: none" class="fs-3">
+                                    <i class="bi bi-cart-plus-fill text-success"></i>
+                                </a>
+                                <a href="{% url 'to_cart_activate' item.product.pk 'remove' %}"
+                                   style="text-decoration: none" class="fs-3">
+                                    <i class="bi bi-cart-dash-fill text-danger"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item custom_text_cart">
+                        Итоговая стоимость продукта: {{ item.get_total_price }}$
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
+
+            <div class="col-6 mt-5">
+                <form action="{% url 'payment_path' %}" method="post">
+                    {% csrf_token %}
+
+                    <hr>
+                    <h4>Введите данные</h4>
+                    <hr>
+
+                    <div class="row">
+                      <div class="col-5">
+                          <div class="form-field my-3">
+                              {{ customer_form.first_name }}
+                          </div>
+                          <div class="form-field my-3">
+                              {{ customer_form.last_name }}
+                          </div>
+                      </div>
+
+                        <div class="col-7">
+                            {% for field in shipping_form %}
+                            <div class="form-field my-3">
+                                {{ field }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-3">
+                        <button type="submit" class="btn btn-outline-info">Отправить данные</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

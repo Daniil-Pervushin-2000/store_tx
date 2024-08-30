@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load pages_simple_tag %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container my-1">
+    <div class="card card-custom h-100">
+        <div class="d-flex justify-content-around">
+            <div class="col-4">
+                <img src="{{ product.get_first_photo }}" class="card-img-top custom-image" alt="...">
+            </div>
+            <div class="col-5">
+                <div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for image in product.get_all_photo.all %}
+                        {% if forloop.counter == 1 %}
+                        <div class="carousel-item active">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ image.photo.url }}" class="d-block custom-image-slider" alt="...">
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="carousel-item">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ image.photo.url }}" class="d-block custom-image-slider" alt="...">
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev bg-dark" style="width: 50px" type="button"
+                            data-bs-target="#carouselExample"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next bg-dark" style="width: 50px" type="button"
+                            data-bs-target="#carouselExample"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h5 class="card-title">{{ product.title }}</h5>
+                {% if request.user.is_authenticated %}
+                {% check_favorite request.user product.pk as status_favorite %}
+                {% if status_favorite %}
+                <a href="{% url 'favorite_activate' product.pk %}"><i
+                        class="bi bi-balloon-heart-fill fs-5 text-danger"></i></a>
+                {% else %}
+                <a href="{% url 'favorite_activate' product.pk %}"><i class="bi bi-balloon-heart fs-5 text-danger"></i></a>
+                {% endif %}
+                {% endif %}
+            </div>
+            <p class="card-text">
+                {{ product.description }}
+            </p>
+            {% if request.user.is_authenticated %}
+            {% check_rating request.user product.pk as status_rating %}
+            {% if status_rating.status == 'show_form' %}
+            <form action="{% url 'rating_activate' product.pk %}" method="post" class="my-4">
+                {% csrf_token %}
+
+                <div class="d-flex">
+                    {% for num in rating_range %}
+                    <input type="radio" name="rating" id="star-{{ num }}" value="{{ num }}">
+                    {% endfor %}
+                    <button type="submit" class="btn btn-outline-warning ms-5">Оценить</button>
+                </div>
+            </form>
+
+            <p>Общая оценка {{ status_rating.overall_rating }} 🌟</p>
+            {% else %}
+            <p>Ваша оценка {{ status_rating.rating }} 🌟</p>
+            <p>Общая оценка {{ status_rating.overall_rating }} 🌟</p>
+            {% endif %}
+            {% endif %}
+            <div class="d-flex justify-content-evenly">
+                <div class="col-3">
+                    <ul class="list-group list-group-flush custom-list">
+                        <li class="list-group-item custom-list-item">Кол-во {{ product.quantity }}</li>
+                        <li class="list-group-item custom-list-item">Бренд {{ product.brand }}</li>
+                        <li class="list-group-item custom-list-item">Стоимость {{ product.price }}$</li>
+                        <li class="list-group-item custom-list-item">Просмотры {{ product.views }}</li>
+                    </ul>
+                </div>
+
+                <div class="col-3">
+                    <ul class="list-group list-group-flush custom-list" style="height: auto;">
+                        <li class="list-group-item custom-list-item">Теги продукта</li>
+                        {% for tag in product.tags.all %}
+                        <li class="list-group-item custom-list-item"># {{ tag }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-around">
+                <a href="" class="btn btn-outline-danger">Добавить в избранное</a>
+                <a href="" class="btn btn-outline-danger">Купить</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col bg-light p-4">
+            <div class="d-flex justify-content-center">
+                <div class="col-8">
+                    {% if request.user.is_authenticated %}
+                    <form action="{% url 'comment_activate' product.pk %}" method="post">
+                        {% csrf_token %}
+                        {{ form_comment.as_p }}
+
+                        <button type="submit" class="btn btn-outline-primary">Отправить</button>
+                    </form>
+                    {% else %}
+                    <h3>Комментарии могу оставлять, только зарегистрированные пользователи</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="col bg-light p-4">
+            {% for comment in comments %}
+            <div class="card my-3">
+                <div class="card-header">
+                    {{ comment.auth }}
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ comment.content }}</p>
+                        <footer class="blockquote-footer">
+                            {{ comment.created_at }}
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

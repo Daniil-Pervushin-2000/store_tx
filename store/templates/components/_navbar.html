@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="border-bottom: 3px solid;">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index_path' %}">STORE TX</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'index_path' %}">Главная страница</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop_path' %}">Каталог товаров</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_path' %}">Моя корзина</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">История покупок</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'show_favorite_path' request.user.pk %}">Ваше желаемое</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create_product' %}">Создание продукта</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Аккаунт
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if not request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'login_path' %}">Войти</a></li>
+                        <li><a class="dropdown-item" href="{% url 'register_path' %}">Регистрация</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'logout_path' %}">Выйти</a></li>
+                        <li><a class="dropdown-item" href="{% url 'show_profile_path' request.user.pk %}">Профиль</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-disabled="true" data-bs-toggle="collapse" href="#collapseExampleSearch"
+                       role="button" aria-expanded="false" aria-controls="collapseExampleSearch">Поиск</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="col-8">
+        <div class="collapse" id="collapseExampleSearch">
+            <div class="card card-body">
+                <form action="{% url 'search_activate' %}" class="d-flex" role="search">
+                    <input class="form-control me-2" name="q" type="search" placeholder="Поиск" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

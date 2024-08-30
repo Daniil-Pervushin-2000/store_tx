@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    {% if products %}
+    <div class="card p-4">
+        {% if len_products == 1 %}
+        <div class="d-flex justify-content-center">
+            {% for item in products %}
+            <div class="card h-100">
+                <ul class="list-group">
+                    <li class="list-group-item custom_text_cart">{{ item.product.title }}</li>
+                    <li class="list-group-item custom_text_cart">Стоимость продукта: {{ item.product.price }}$</li>
+                    <li class="list-group-item custom_text_cart">
+                        <div class="d-flex justify-content-between">
+                                <div class="my-auto">
+                                    Количество продукта: {{ item.quantity }}
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'add' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-plus-fill text-success"></i>
+                                    </a>
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'remove' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-dash-fill text-danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                    </li>
+                    <li class="list-group-item custom_text_cart">
+                        Итоговая стоимость продукта: {{ item.get_total_price }}$</li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif len_products == 2 %}
+        <div class="d-flex justify-content-around">
+            {% for item in products %}
+            <div class="card h-100">
+                <ul class="list-group">
+                    <li class="list-group-item custom_text_cart">{{ item.product.title }}</li>
+                    <li class="list-group-item custom_text_cart">Стоимость продукта: {{ item.product.price }}$</li>
+                    <li class="list-group-item custom_text_cart">
+                        <div class="d-flex justify-content-between">
+                                <div class="my-auto">
+                                    Количество продукта: {{ item.quantity }}
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'add' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-plus-fill text-success"></i>
+                                    </a>
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'remove' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-dash-fill text-danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                    </li>
+                    <li class="list-group-item custom_text_cart">
+                        Итоговая стоимость продукта: {{ item.get_total_price }}$</li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row row-cols-1 row-cols-md-3 g-5">
+            {% for item in products %}
+            <div class="col ">
+                <div class="card">
+                    <ul class="list-group h-100">
+                        <li class="list-group-item custom_text_cart">{{ item.product.title }}</li>
+                        <li class="list-group-item custom_text_cart">Стоимость продукта: {{ item.product.price }}$</li>
+                        <li class="list-group-item custom_text_cart">
+                            <div class="d-flex justify-content-between">
+                                <div class="my-auto">
+                                    Количество продукта: {{ item.quantity }}
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'add' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-plus-fill text-success"></i>
+                                    </a>
+                                    <a href="{% url 'to_cart_activate' item.product.pk 'remove' %}" style="text-decoration: none" class="fs-3">
+                                        <i class="bi bi-cart-dash-fill text-danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">Итоговая стоимость продукта: {{ item.get_total_price }}$</li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card p-3 mt-3">
+        <div class="d-flex justify-content-around my-3">
+            <h4>Количество товаров {{ order.get_cart_total_quantity }}</h4>
+            <h4>Сумма заказа {{ order.get_cart_total_price }}$</h4>
+        </div>
+        <div class="d-flex justify-content-around">
+            <a href="{% url 'clear_cart_activate' %}" class="btn btn-outline-danger">Очистить корзину</a>
+            <a href="{% url 'checkout_activate' %}" class="btn btn-outline-success">Оформить заказ</a>
+        </div>
+    </div>
+    {% else %}
+    <h3 class="text-center text-danger bg-dark p-2">Корзина пустая ¯\_(ツ)_/¯</h3>
+    {% endif %}
+</div>
+{% endblock content %}
